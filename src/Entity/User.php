@@ -44,9 +44,17 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $position;
+
 
     // --------------- Methods ---------------
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -56,12 +64,17 @@ class User implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     * @return string
      */
     public function getUsername(): string
     {
         return (string)$this->username;
     }
 
+    /**
+     * @param string $username
+     * @return User
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -71,6 +84,7 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     * @return array
      */
     public function getRoles(): array
     {
@@ -80,6 +94,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -89,12 +107,17 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     * @return string
      */
     public function getPassword(): string
     {
         return (string)$this->password;
     }
 
+    /**
+     * @param string $password
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -117,5 +140,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?string $position): self
+    {
+        $this->position = $position;
+
+        return $this;
     }
 }

@@ -1,0 +1,93 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}{{ parent() }} - Index{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div id="table_event" class="col-12">
+            <h2>Events</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in future_events %}
+                    <tr>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.date ? event.date|date('d M Y - H:i') : '' }}</td>
+                        <td>
+                            <a class="badge badge-info" href="{{ path('event_show', {'id': event.id}) }}">Show</a>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a class="badge badge-default"
+                                   href="{{ path('event_edit', {'id': event.id}) }}">Edit</a>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a class="badge badge-default" href="{{ path('event_new') }}">Create new</a>
+        </div>
+    </div>
+
+
+    <div class="row d-flex flex-row">
+        <div id="playerList" class="p-2 ml-lg-4 mr-lg-4" style="width: 520px">
+            <h3 class="mt-5">Players</h3>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Position</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.position }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No players found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="derniersResultat" class="p-2" style="width: 520px">
+            <h3 class="mt-5">Past events</h3>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Results</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in past_events %}
+                    <tr>
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.date ? event.date|date('d-m-y') : '' }}</td>
+                        <td>{{ event.result }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

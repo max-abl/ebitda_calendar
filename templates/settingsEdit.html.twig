@@ -1,0 +1,11 @@
+{% extends 'content.html.twig' %}
+
+{% block title %}{{ parent() }} - Settings{% endblock %}
+
+{% block content %}
+    <h1>Edit profile</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_settings_index') }}">Back</a>
+{% endblock %}
