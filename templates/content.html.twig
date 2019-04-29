@@ -20,7 +20,7 @@
                         </li>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <li class="nav-item active">
-                                <a href="{{ path('user_index') }}" class="nav-link"><b>Admin</b></a>
+                                <a href="{{ path('admin_user_index') }}" class="nav-link"><b>Admin</b></a>
                             </li>
                         {% endif %}
                         <li class="nav-item active">
@@ -31,7 +31,8 @@
                             <a href="{{ path('app_security_login') }}" class="nav-link text-primary"><b>Sign in</b></a>
                         </li>
                         <li class="nav-item active">
-                            <a href="{{ path('app_security_register') }}" class="nav-link text-neutral"><b>Sign up</b></a>
+                            <a href="{{ path('app_security_register') }}" class="nav-link text-neutral"><b>Sign
+                                    up</b></a>
                         </li>
                     {% endif %}
                 </ul>
