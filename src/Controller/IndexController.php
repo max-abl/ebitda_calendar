@@ -17,7 +17,11 @@ class IndexController extends AbstractController
 {
 
     /**
+     *
      * @Route("/", name="app_index")
+     * @param EventRepository $eventRepository
+     * @param UserRepository $userRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(EventRepository $eventRepository, UserRepository $userRepository)
     {

@@ -31,6 +31,8 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/edit", name="app_settings_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function edit(Request $request): Response
     {

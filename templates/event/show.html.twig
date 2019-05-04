@@ -1,30 +1,135 @@
 {% extends 'content.html.twig' %}
 
-{% block title %}{{ parent() }} - Show event{% endblock %}
+{% block title %}{{ parent() }} - {{ event.name }}{% endblock %}
 
 {% block content %}
-    <h1>Event</h1>
-
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ event.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ event.name }}</td>
-        </tr>
-        <tr>
-            <th>Date</th>
-            <td>{{ event.date ? event.date|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_index') }}">back to list</a>
-
-    <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
-
-    {{ include('event/_delete_form.html.twig') }}
+    <div class="row mt-5">
+        <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+            <h6>Event</h6>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td><b>{{ event.name }}</b></td>
+                </tr>
+                <tr>
+                    <td>{{ event.date ? event.date|date('d M Y - H:i') : '' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h6>Set status</h6>
+            <table class="table">
+                <tbody>
+                {% if current_user_available is not null %}
+                    <tr>
+                        <td>Availability</td>
+                        <td>
+                            {% if current_user_available.status.id == 1 %}
+                                <span class="badge badge-success">{{ current_user_available.status.label }}</span>
+                            {% elseif current_user_available.status.id == 2 or current_user_available.status.id == 3 %}
+                                <span class="badge badge-default">{{ current_user_available.status.label }}</span>
+                            {% elseif current_user_available.status.id == 4 %}
+                                <span class="badge badge-success">{{ current_user_available.status.label }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary">UNDEFINED</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Content</td>
+                        <td>{{ current_user_available.text }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>Availability</td>
+                        <td>
+                            <span class="badge badge-danger">NO!</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><i>/!\ Please confirm your availability</i></td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if current_user_available is not null %}
+                <a class="badge badge-info"
+                   href="{{ path('app_availability_event_edit', {'id': current_user_available.id}) }}">Change
+                    availability</a>
+            {% else %}
+                <a class="badge badge-success" href="{{ path('app_availability_set', {'id': event.id}) }}">Set
+                    availability</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-6 col-md-12 col-sm-12 mb-5">
+            <h6>Availability <span class="text-success">{{ event.availabilities | length }}</span></h6>
+            <table class="table table-condensed">
+                <tbody>
+                {% for availability in event.availabilities %}
+                    <tr>
+                        <td>
+                            {% if current_user.id == availability.player.id %}
+                                <span class="text-info">{{ availability.player.username }}</span>
+                            {% else %}
+                                {{ availability.player.username }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if availability.status.id == 1 %}
+                                <span class="badge badge-success">{{ availability.status.label }}</span>
+                            {% elseif availability.status.id == 2 or availability.status.id == 3 %}
+                                <span class="badge badge-default">{{ availability.status.label }}</span>
+                            {% elseif availability.status.id == 4 %}
+                                <span class="badge badge-success">{{ availability.status.label }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary">UNDEFINED</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No players found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h6>Players</h6>
+            <table class="table table-condensed">
+                <tbody>
+                {% for user in users_not_available %}
+                    <tr>
+                        <td>
+                            {% if user.id == current_user.id %}
+                                <span class="text-info">{{ user.username }}</span>
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </td>
+                        <td><span class="badge badge-danger">NO!</span></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No players found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h6>Actions</h6>
+            {% if is_granted("ROLE_MANAGER") %}
+                <a class="badge badge-default" href="{{ path('event_edit', {'id': event.id}) }}">edit event</a>
+            {% endif %}
+            {% if is_granted("ROLE_SUPER_ADMIN") %}
+                {{ include('event/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

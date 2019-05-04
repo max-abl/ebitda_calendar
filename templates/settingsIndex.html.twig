@@ -3,20 +3,22 @@
 {% block title %}{{ parent() }} - Settings{% endblock %}
 
 {% block content %}
-    <h3>Profile</h3>
+    <div class="offset-lg-3 col-lg-6">
+        <h3>Profile</h3>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th class="text-neutral">Username</th>
-            <td>{{ current_user.username }}</td>
-        </tr>
-        <tr>
-            <th class="text-neutral">Position</th>
-            <td>{{ current_user.position }}</td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th class="text-neutral">Username</th>
+                <td>{{ current_user.username }}</td>
+            </tr>
+            <tr>
+                <th class="text-neutral">Position</th>
+                <td>{{ current_user.position }}</td>
+            </tr>
+            </tbody>
+        </table>
 
-    <a class="badge badge-default" href="{{ path('app_settings_edit') }}">Edit</a>
+        <a class="badge badge-default" href="{{ path('app_settings_edit') }}">Edit</a>
+    </div>
 {% endblock %}

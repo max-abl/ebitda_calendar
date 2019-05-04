@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,21 @@ class Event
      */
     private $result;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Availability", mappedBy="event", orphanRemoval=true)
+     */
+    private $availabilities;
+
+    /**
+     * Event constructor.
+     */
+    public function __construct()
+    {
+        $this->availabilities = new ArrayCollection();
+    }
+
+
+    // --------------- Methods ---------------
 
     /**
      * @return int|null
@@ -86,6 +103,45 @@ class Event
     public function setResult(?string $result): self
     {
         $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Availability[]
+     */
+    public function getAvailabilities(): Collection
+    {
+        return $this->availabilities;
+    }
+
+    /**
+     * @param Availability $availability
+     * @return Event
+     */
+    public function addAvailability(Availability $availability): self
+    {
+        if (!$this->availabilities->contains($availability)) {
+            $this->availabilities[] = $availability;
+            $availability->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Availability $availability
+     * @return Event
+     */
+    public function removeAvailability(Availability $availability): self
+    {
+        if ($this->availabilities->contains($availability)) {
+            $this->availabilities->removeElement($availability);
+            // set the owning side to null (unless already changed)
+            if ($availability->getEvent() === $this) {
+                $availability->setEvent(null);
+            }
+        }
 
         return $this;
     }
