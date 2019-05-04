@@ -1,0 +1,21 @@
+{
+  "short_name": "Ebitda",
+  "name": "FC Ebitda",
+  "icons": [
+    {
+      "src": "/img/fc_ebitda_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/fc_ebitda_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#222a42",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#171941"
+}

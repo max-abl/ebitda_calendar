@@ -5,7 +5,7 @@
 {% block content %}
     <div class="row mt-5">
         <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-            <h6>Event</h6>
+            <h4 class="font-weight-bold">EVENT</h4>
             <table class="table">
                 <tbody>
                 <tr>
@@ -18,7 +18,7 @@
             </table>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
-            <h6>Set status</h6>
+            <h4 class="font-weight-bold">SET STATUS</h4>
             <table class="table">
                 <tbody>
                 {% if current_user_available is not null %}
@@ -48,7 +48,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><i>/!\ Please confirm your availability</i></td>
+                        <td colspan="2"><i>/!\ Please confirm if you are available</i></td>
                     </tr>
                 {% endif %}
                 </tbody>
@@ -65,7 +65,8 @@
     </div>
     <div class="row mt-5">
         <div class="col-lg-6 col-md-12 col-sm-12 mb-5">
-            <h6>Availability <span class="text-success">{{ event.availabilities | length }}</span></h6>
+            <h4 class="font-weight-bold">AVAILABILITY <span
+                        class="text-success">{{ event.availabilities | length }}</span></h4>
             <table class="table table-condensed">
                 <tbody>
                 {% for availability in event.availabilities %}
@@ -88,6 +89,9 @@
                                 <span class="badge badge-secondary">UNDEFINED</span>
                             {% endif %}
                         </td>
+                        <td>
+                            <span>{{ availability.text }}</span>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -98,7 +102,7 @@
             </table>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
-            <h6>Players</h6>
+            <h4 class="font-weight-bold">PLAYERS</h4>
             <table class="table table-condensed">
                 <tbody>
                 {% for user in users_not_available %}
@@ -121,15 +125,15 @@
             </table>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col-lg-6 col-md-12 col-sm-12">
-            <h6>Actions</h6>
-            {% if is_granted("ROLE_MANAGER") %}
+    {% if is_granted("ROLE_MANAGER") %}
+        <div class="row mt-5">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <h4 class="font-weight-bold">ACTIONS</h4>
                 <a class="badge badge-default" href="{{ path('event_edit', {'id': event.id}) }}">edit event</a>
-            {% endif %}
-            {% if is_granted("ROLE_SUPER_ADMIN") %}
-                {{ include('event/_delete_form.html.twig') }}
-            {% endif %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                    {{ include('event/_delete_form.html.twig') }}
+                {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

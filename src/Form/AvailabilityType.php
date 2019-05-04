@@ -12,6 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AvailabilityType extends AbstractType
 {
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -20,10 +25,16 @@ class AvailabilityType extends AbstractType
                 'choice_label' => 'label'
             ])
             ->add('text', TextType::class, [
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'autocomplete' => 'off'
+                ]
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

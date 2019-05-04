@@ -6,25 +6,29 @@
             <div class="navbar-translate">
                 <a class="navbar-brand" href="{{ path('app_index') }}">
                     <img src="{{ asset('img/logo_fc_ebitda.png') }}" width="50" height="50"
-                         class="d-inline-block align-middle" alt="">
+                         class="d-inline-block align-middle" alt="Logo Ebitda"><span class="ml-3 mr-5">FC EBITDA</span>
                 </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                </button>
             </div>
-            <div class="collapse navbar-collapse">
+            <div id="navbarNavDropdown" class="collapse navbar-collapse col-lg-11 col-md-9 col-sm-9 col-9">
                 <ul class="navbar-nav">
                     {% if current_user is defined %}
                         <li class="nav-item active">
-                            <a href="{{ path('app_index') }}" class="nav-link"><b>FC EBITDA</b></a>
-                        </li>
-                        <li class="nav-item active">
-                            <a href="{{ path('app_settings_index') }}" class="nav-link"><b>Settings</b></a>
+                            <a href="{{ path('app_settings_index') }}" class="nav-link"><span class="font-weight-bold">PROFILE</span></a>
                         </li>
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <li class="nav-item active">
-                                <a href="{{ path('admin_user_index') }}" class="nav-link"><b>Admin</b></a>
+                                <a href="{{ path('admin_user_index') }}" class="nav-link"><span
+                                            class="font-weight-bold">ADMIN</span></a>
                             </li>
                         {% endif %}
                         <li class="nav-item active">
-                            <a href="{{ path('app_security_logout') }}" class="nav-link"><b>Logout</b></a>
+                            <a href="{{ path('app_security_logout') }}" class="nav-link"><span>Logout</span></a>
                         </li>
                     {% else %}
                         <li class="nav-item active">
@@ -49,6 +53,5 @@
                 <a href="https://twitter.com/max0ble">@max0ble</a> - 2019
             </div>
         </div>
-
     </footer>
 {% endblock %}

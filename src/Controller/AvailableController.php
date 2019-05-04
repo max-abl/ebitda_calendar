@@ -31,9 +31,13 @@ class AvailableController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($availability);
-            $entityManager->flush();
+
+            // Si NO! alors on fait rien
+            if ($availability->getStatus()->getId() != 4) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($availability);
+                $entityManager->flush();
+            }
 
             return $this->redirectToRoute('event_show', [
                 'id' => $event->getId()
@@ -55,22 +59,38 @@ class AvailableController extends AbstractController
      */
     public function edit(Request $request, Availability $availability): Response
     {
+        if ($availability->getPlayer()->getId() == $this->getUser()->getId()) {
 
-        $form = $this->createForm(AvailabilityType::class, $availability);
-        $form->handleRequest($request);
+            $form = $this->createForm(AvailabilityType::class, $availability);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+
+                if ($availability->getStatus()->getId() == 4) { // If NO! => delete
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($availability);
+                    $entityManager->flush();
+                } else { // else => save
+                    $entityManager->flush();
+                }
+
+                return $this->redirectToRoute('event_show', [
+                    'id' => $availability->getEvent()->getId(),
+                ]);
+            }
+
+            return $this->render('availabilityEdit.html.twig', [
+                'availability' => $availability,
+                'current_user' => $this->getUser(),
+                'form' => $form->createView(),
+            ]);
+
+        } else {
 
             return $this->redirectToRoute('event_show', [
                 'id' => $availability->getEvent()->getId(),
             ]);
         }
-
-        return $this->render('availabilityEdit.html.twig', [
-            'availability' => $availability,
-            'current_user' => $this->getUser(),
-            'form' => $form->createView(),
-        ]);
     }
 }

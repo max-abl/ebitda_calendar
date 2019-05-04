@@ -3,9 +3,9 @@
 {% block title %}{{ parent() }} - New event{% endblock %}
 
 {% block content %}
-    <h1>Create new Event</h1>
-
-    {{ include('event/_form.html.twig') }}
-
-    <a href="{{ path('app_index') }}">back to list</a>
+    <div class="offset-lg-3 col-lg-6 text-neutral">
+        <h4 class="font-weight-bold">NEW EVENT</h4>
+        {{ include('event/_form.html.twig') }}
+        <a class="badge badge-default" href="{{ path('app_index') }}">back to list</a>
+    </div>
 {% endblock %}

@@ -60,7 +60,9 @@ class EventController extends AbstractController
         foreach ($users as $user) {
             $available = false;
             foreach ($user->getAvailabilities() as $availability) {
-                $available = ($availability->getEvent()->getId() == $event->getId());
+                if ($availability->getEvent()->getId() == $event->getId()) {
+                    $available = true;
+                }
             }
             if (!$available) {
                 array_push($usersNotAvailable, $user);
@@ -92,6 +94,7 @@ class EventController extends AbstractController
      */
     public function edit(Request $request, Event $event): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_MANAGER');
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -118,6 +121,7 @@ class EventController extends AbstractController
      */
     public function delete(Request $request, Event $event): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
